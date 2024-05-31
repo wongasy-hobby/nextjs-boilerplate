@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ElevenLabsClient, play } from 'elevenlabs';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const elevenlabs = new ElevenLabsClient({
+    apiKey: 'YOUR_API_KEY', // Defaults to process.env.ELEVENLABS_API_KEY
+  });
+
+  const audio = await elevenlabs.generate({
+    voice: 'Rachel',
+    text: 'Hello! 你好! Hola! नमस्ते! Bonjour! こんにちは! مرحبا! 안녕하세요! Ciao! Cześć! Привіт! வணக்கம்!',
+    model_id: 'eleven_multilingual_v2',
+  });
+
+  await play(audio);
+
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
